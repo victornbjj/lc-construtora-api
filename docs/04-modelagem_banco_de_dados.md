@@ -2,7 +2,7 @@
 
 > Continuação da Modelagem de Domínio. Não há herança JPA: o modelo usa uma **classe única `Imovel`** com o campo `tipo` (enum `TipoImovel`), então existe uma única tabela `imovel`. O `Endereco` é um objeto embutido (`@Embeddable`), e suas colunas ficam dentro de `imovel`. Migrations gerenciadas via **Flyway** em `src/main/resources/db/migration`.
 >
-> Os enums (`tipo`, `situacao`, `perfil`) são gravados como texto (`@Enumerated(EnumType.STRING)`).
+> Os enums (`tipo`, `situacao`, `role`) são gravados como texto (`@Enumerated(EnumType.STRING)`).
 
 ## 1. Diagrama Entidade-Relacionamento (visão textual)
 
@@ -42,7 +42,7 @@ erDiagram
         varchar nome
         varchar email UK
         varchar senha
-        varchar perfil
+        varchar role
         boolean ativo
         datetime data_cadastro
     }
@@ -77,7 +77,7 @@ erDiagram
 | nome | VARCHAR(150) | NOT NULL |
 | email | VARCHAR(150) | NOT NULL, UNIQUE (RN05) |
 | senha | VARCHAR(100) | NOT NULL (hash BCrypt, nunca texto puro) |
-| perfil | VARCHAR(20) | NOT NULL (`ADMIN`) |
+| role | VARCHAR(20) | NOT NULL (`ADMIN`) |
 | ativo | BOOLEAN | NOT NULL, default TRUE |
 | data_cadastro | DATETIME | NOT NULL, default CURRENT_TIMESTAMP |
 
@@ -129,7 +129,7 @@ CREATE TABLE usuario (
     nome VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
-    perfil VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL,
     ativo BOOLEAN NOT NULL DEFAULT TRUE,
     data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -151,7 +151,7 @@ CREATE INDEX idx_contato_data_envio ON contato (data_envio);
 ## 4. Script de Seed do Primeiro Administrador — `V2__seed_admin_inicial.sql`
 
 ```sql
-INSERT INTO usuario (nome, email, senha, perfil, ativo)
+INSERT INTO usuario (nome, email, senha, role, ativo)
 VALUES ('${admin_nome}', '${admin_email}', '${admin_senha_hash}', 'ADMIN', TRUE);
 ```
 

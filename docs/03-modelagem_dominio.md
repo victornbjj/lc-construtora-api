@@ -24,7 +24,7 @@ classDiagram
         -String nome
         -String email
         -String senha
-        -Perfil perfil
+        -Role role
         -Boolean ativo
         -LocalDateTime dataCadastro
     }
@@ -59,7 +59,7 @@ classDiagram
         ALUGADO
     }
 
-    class Perfil {
+    class Role {
         <<enumeration>>
         ADMIN
     }
@@ -67,7 +67,7 @@ classDiagram
     Imovel *-- Endereco
     Imovel --> TipoImovel
     Imovel --> SituacaoImovel
-    Usuario --> Perfil
+    Usuario --> Role
     Usuario ..> Imovel : gerencia (CRUD)
     Usuario ..> Contato : consulta
     Contato "0..*" --> "0..1" Imovel : refere-se a
@@ -115,7 +115,7 @@ Representa o admin do sistema.
 - `nome`: nome completo (obrigatório)
 - `email`: único (RN05, retorna 409 se duplicado)
 - `senha`: guardada com hash (BCrypt), nunca em texto puro, com no mínimo 8 caracteres (RN06)
-- `perfil`: sustenta o 401/403 das rotas administrativas (RF06)
+- `role`: sustenta o 401/403 das rotas administrativas (RF06)
 - `ativo`: permite desativar um admin (RN07: ninguém desativa a si mesmo nem o último admin ativo)
 - `dataCadastro`: preenchida automaticamente (`@PrePersist`)
 
@@ -139,7 +139,7 @@ Por causa da LGPD (RNF13), só são coletados esses campos e o acesso é restrit
 |------|---------|
 | `TipoImovel` | `CASA`, `APARTAMENTO`, `TERRENO` |
 | `SituacaoImovel` | `DISPONIVEL`, `VENDIDO`, `ALUGADO` |
-| `Perfil` | `ADMIN` |
+| `Role` | `ADMIN` |
 
 ## 3. Relacionamentos
 
